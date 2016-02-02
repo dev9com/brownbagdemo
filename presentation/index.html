@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Spring Boot Brown Bag</title>
+
+		<meta name="description" content="Spring Boot Brown Bag">
+		<meta name="author" content="Dev9">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Brown Bag Sessions</h1>
+					<h3>Spring Boot</h3>
+					<p>
+						<small>A <a href="https://www.dev9.com">Dev9</a> presentation</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>What's Spring Boot?</h2>
+					<p>Spring Boot is a convention-over-configuration Java framework designed to minimize the friction between you and your business logic, while encouraging modern best practices.
+					</p>
+				</section>
+
+				<section>
+					<h2>Spring Boot Goals</h2>
+					<ul>
+						<li>Get up and running quickly</li>
+						<li>Focus on business logic, not framework configuration</li>
+						<li>Provide opinionated best practices</li>
+						<li>No code generation -- it's all in the framework</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Bootstrapping Spring Boot</h2>
+					<p><a href="http://start.spring.io/" target="_blank">http://start.spring.io/</a></p>
+					<p>1. Generate Project Base</p>
+				</section>
+
+				<section>
+					<h2>Bootstrapping Spring Book</h2>
+					<p>2. Add Controller</p>
+					<pre><code class="hljava" data-trim contenteditable>
+package com.example;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class HelloWorldController {
+
+   @RequestMapping("/")
+   @ResponseBody
+   public String getHelloWorld() {
+
+       return "Hello World";
+   }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Bootstrapping Spring Book</h2>
+					<p>3. Run</p>
+					<pre><code class="hljava" data-trim contenteditable>
+mvn spring-boot:run
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Hello World Demo</h2>
+					<p style="font-size: 0.5em;">Project from Spring Initializer or origin/step0</p>
+					<p><a href="http://localhost:8080" target="_blank">http://localhost:8080</a></p>
+				</section>
+
+				<section>
+					<h2>Whoa! What was that?</h2>
+					<ul>
+						<li>Embedded Tomcat Server</li>
+						<li>Spring 4.0</li>
+						<li>Zero-config</li>
+					</ul>
+				</section>
+
+				
+
+				<section>
+					<h2>Boilerplate configuration</h2>
+						<p>Starter Dependencies</p>
+						<ul>
+							<li>Dependencies grouped by functional facets</li>
+							<li>Using <code style="color:#ffb3ff; font-size: 28px;">Maven</code> dependency <code style="color:#ffb3ff; font-size: 28px;">BOM</code></li>
+						</ul>
+						<pre><code>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+
+						</code></pre>
+				</section>
+
+				<section>
+					<h2>Spring Conditional Configuration</h2>
+						<code style="color:#ffb3ff; font-size: .4em;">@Conditional | @ConditionalOnMissingBean | @ConditionalOnClass | @ConditionalOnExpression | @ConditionalOnJndi | @ConditionalOnResource</code>
+					<pre><code>
+@Configuration
+@ConditionalOnClass({ DataSource.class, EmbeddedDatabaseType.class })
+@EnableConfigurationProperties(DataSourceProperties.class)
+@Import({ Registrar.class, DataSourcePoolMetadataProvidersConfiguration.class })
+public class DataSourceAutoConfiguration {
+...
+}						
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Moving Beyond Hello World</h2> 
+					<p style="font-size: 0.5em;">starting with origin/step1</p>
+					<ul>
+						<li>Add a web template engine</li>
+						<li>Add some content</li>
+						<li>Wire our config</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Moving Beyond Hello World</h2> 
+					<pre><code>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>					
+					</code></pre>
+					<p>then,</p>
+					<pre><code>
+mvn spring-boot:run
+					</code></pre>
+					<p>then,</p>
+					<p><a href="http://localhost:8080" target="_blank">http://localhost:8080</a></p>
+				</section>
+
+				<section>
+					<h2>Making Config Changes</h2>
+					<p style="font-size: 0.35em;">starting with origin/step2</p>
+					<ul>
+						<li>Follow <a href="http://12factor.net/">12-Factor App</a> Best Practices</li>
+						<li>Multiple methods for config changes
+							<ul style="font-size:0.5em;">
+								<li>Command-line arguments</li>
+								<li>JNDI attributes from java:comp/env</li>
+								<li>JVM system properties</li>
+								<li>Operating system environment variables</li>
+								<li>Randomly generated values for properties prefixed with <code style="color:#ffb3ff;">random.*</code> (referenced when setting other properties, such as <code style="color:#ffb3ff;">${random.long}</code>)</li>
+								<li>An <code style="color:#ffb3ff;">application.properties</code> or <code style="color:#ffb3ff;">application.yml</code> file outside of the application</li>
+								<li>An <code style="color:#ffb3ff;">application.properties</code> or <code style="color:#ffb3ff;">application.yml</code> file packaged inside of the application</li>
+								<li>Property sources specified by <code style="color:#ffb3ff;">@PropertySource</code></li>
+								<li>Default properties</li>
+							</ul>
+						</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<h2>Making Config Changes</h2>
+					<p>Let's change the server's port:</p>
+					<pre style="font-size:0.4em"><code>
+mvn spring-boot:run -Dserver.port=3000
+					</code></pre>
+					<p>will override</p>
+					<pre style="font-size:0.4em"><code>
+# resources/application.properties
+server.port=8000
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>YAML</h2>
+					<pre style="font-size:0.3em"><code>
+# resources/application.yml
+spring:
+   application:
+       name: cruncher
+   datasource:
+       driverClassName: com.mysql.jdbc.Driver
+       url: jdbc:mysql://localhost/test
+server:
+   port: 8000
+---
+
+spring:
+   profiles: development
+server:
+   port: 9001
+
+---
+
+spring:
+   profiles: production
+server:
+   port: 8081
+					</code></pre>
+					<p>Show me the demo!</p>
+				</section>
+
+				<section>
+					<h2>Spring Actuator</h2> 
+					<p style="font-size: 0.5em;">starting with origin/step3</p>
+					<p>Spring Actuator exposes several endpoints for providing a large range of analytical functional for free</p>
+					<p><code style="color:#ffb3ff; font-size:0.4em;"> /autoconfig | /configprops | /beans | /dump | /env | /env/{name} | /health | /info | /mappings | /metrics | /metrics/ | /shutdown | /trace</code></p>
+				</section>
+
+				<section>
+					<h2>Spring Actuator</h2>
+					<pre><code>
+# pom.xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+					</code></pre>
+					<pre><code>
+mvn spring-boot:run
+					</code></pre>
+					<p><a href="http://localhost:8000/configprops" target="_blank">http://localhost:8000/configprops</a></p>
+				</section>
+				<section>
+					<h2>Spring Actuator</h2>
+					<p>Select endpoint details below:</p>
+					<table style="font-size:0.4em">
+						<thead>
+							<tr>
+								<th>HTTP Method</th>
+								<th>Path</th>
+								<th>Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>GET</td>
+								<td><code style="color:#ffb3ff;">/metrics</code></td>
+								<td>Reports various application metrics such as memory usage and HTTP request counters.</td>
+								</tr>
+
+								<tr>
+								<td>GET</td>
+								<td><code style="color:#ffb3ff;">/health</code></td>
+								<td>Reports health metrics for tde application, as provided by HealthIndicator implementations.</td>
+								</tr>
+								<tr>
+
+								<td>GET</td>
+								<td><code style="color:#ffb3ff;">/trace</code></td>
+								<td>Provides basic trace information (timestamp, headers, and so on) for HTTP requests.</td>
+								</tr>
+								<tr>
+
+								<td>GET</td>
+								<td><code style="color:#ffb3ff;">/dump</code></td>
+								<td>Retrieves a snapshot dump of thread activity.</td>
+								</tr>
+								<tr>
+
+								<td>GET</td>
+								<td><code style="color:#ffb3ff;">/info</code></td>
+								<td>Retrieves custom information about tde application, as provided by any properties prefixed with info.</td>
+								</tr>
+						</tbody>
+					</table>
+					<p><a href="http://localhost:8000/info" target="_blank">http://localhost:8000/info</a></p>
+						<p><a href="http://localhost:8000/configprops" target="_blank">http://localhost:8000/metrics</a></p>
+				</section>
+
+				<section>
+					<h2>Deploying Spring Boot</h2>
+					<p style="font-size: 0.5em;">starting with origin/step4</p>
+					<p>Deployment type is indicated by the build file (<code style="color:#ffb3ff;">pom.xml</code>)</p>
+					<ul>
+						<li>WARs</li>
+						<li>JARs</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Questions?</h2>
+					<img src="images/dev9.png">
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
